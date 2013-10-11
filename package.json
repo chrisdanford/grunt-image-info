@@ -1,0 +1,42 @@
+{
+  "name": "grunt-image-info",
+  "version": "0.1.0",
+  "description": "Grunt task to generate CSS, SASS, or JSON files with image dimension info",
+  "main": "tasks/grunt-image-info.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "cd src-test && grunt"
+  },
+  "keywords": [
+    "grunt",
+    "gruntplugin",
+    "sprite",
+    "spritesheet",
+    "css",
+    "cross-platform"
+  ],
+  "author": {
+    "name": "Chris Danford",
+    "email": "chrisdanford@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "json2css": "~4.1.0",
+    "gm": "~1.13.1",
+    "async": "~0.2.9"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.4"
+  },
+  "repository": [
+    {
+      "type": "git",
+      "url": "https://github.com/chrisdanford/grunt-image-info.git"
+    }
+  ]
+}
