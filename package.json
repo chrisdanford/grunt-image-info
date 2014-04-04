@@ -1,6 +1,6 @@
 {
   "name": "grunt-image-info",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Grunt task to generate CSS, SASS, or JSON files with image dimension info",
   "main": "tasks/grunt-image-info.js",
   "engines": {
@@ -31,7 +31,9 @@
     "grunt": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.1.2",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-jshint": "~0.6.4"
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-bump": "0.0.13",
+    "grunt-exec": "^0.4.5"
   },
   "repository": [
     {

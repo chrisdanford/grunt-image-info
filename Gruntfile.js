@@ -15,9 +15,21 @@ module.exports = function (grunt) {
                 }
             },
         },
+        exec: {
+            publish: {
+                command: 'npm publish .',
+            }
+        },
+        bump: {
+            options: {
+                push: false,
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-bump');
+    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask("default", ["jshint", "image_info"]);
 

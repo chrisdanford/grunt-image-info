@@ -1,1 +1,3 @@
 # grunt-image-info
+
+Docs coming soon...
