@@ -57,8 +57,44 @@ module.exports = function (grunt) {
             cssTemplate = options.cssTemplate,
             cssVarMap = options.cssVarMap || function noop () {},
             that = this;
+
+        var imageSizeCache = {};
+        var newImageSizeCache = {};
+        var cacheFile = options.cacheFile;
+
+        if (cacheFile) {
+            try {
+               imageSizeCache = JSON.parse(fs.readFileSync(cacheFile));
+            } catch (e) {
+            }
+        }
         var gmInstance = options.imageMagick ? gm.subClass({ imageMagick: true }) : gm;
 
+        /**
+         * Retrieves size data from a file from either graphicsmagick or the cache
+         * @param  {String}   filename
+         * @param  {Function} callback
+         */
+        var getSizeData = function (filename, callback) {
+            var relFilename = path.relative(__dirname, filename);
+            var cachedMTime = String(imageSizeCache[relFilename] && imageSizeCache[relFilename].mtime);
+            var newMTime = String(cacheFile ? fs.statSync(filename).mtime : "");
+
+            if (cachedMTime === newMTime) {
+                newImageSizeCache[relFilename] = imageSizeCache[relFilename];
+                callback(null, imageSizeCache[relFilename].data);
+                return;
+            }
+
+            gmInstance(filename).size(function (err, data) {
+                if (err) return callback(err);
+                newImageSizeCache[relFilename] = {
+                    mtime: newMTime,
+                    data: data
+                };
+                callback(err, data);
+            });
+        };
 
         // Verify all properties are here
         if (this.files.length === 0) {
@@ -67,7 +103,6 @@ module.exports = function (grunt) {
 
         // Create an async callback
         var done = this.async();
-
 
         var processFile = function(file, callback) {
             if (!file.dest || file.src.length === 0) {
@@ -78,7 +113,7 @@ module.exports = function (grunt) {
             var cleanCoords = [];
             var processSrc = function(src, callback) {
                 // obtain the size of an image
-                gmInstance(src).size(function(err, size) {
+                getSizeData(src, function(err, size) {
                     if (err) {
                         callback(err);
                         return;
@@ -101,7 +136,7 @@ module.exports = function (grunt) {
                     callback();
                 });
             };
-            
+
             // Hitting spawn EMFILE without this.
             var maxGmConcurrency = 10;
 
@@ -143,6 +178,14 @@ module.exports = function (grunt) {
             if (err) {
                 grunt.fatal(err);
                 done(false);
+            }
+
+            if (cacheFile) {
+                try {
+                    fs.writeFileSync(cacheFile, JSON.stringify(newImageSizeCache));
+                } catch (e) {
+                    grunt.log.warn('Unable to write cache file: ' + cacheFile);
+                }
             }
 
             done(true);
