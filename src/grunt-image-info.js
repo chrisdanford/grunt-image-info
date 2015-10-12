@@ -61,6 +61,7 @@ module.exports = function (grunt) {
         var imageSizeCache = {};
         var newImageSizeCache = {};
         var cacheFile = options.cacheFile;
+        var isReadOnlyCache = !!options.readOnlyCache;
 
         if (cacheFile) {
             try {
@@ -180,7 +181,7 @@ module.exports = function (grunt) {
                 done(false);
             }
 
-            if (cacheFile) {
+            if (cacheFile && !isReadOnlyCache) {
                 try {
                     fs.writeFileSync(cacheFile, JSON.stringify(newImageSizeCache));
                 } catch (e) {
