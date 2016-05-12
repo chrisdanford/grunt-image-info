@@ -1,6 +1,6 @@
 {
   "name": "grunt-image-info",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Grunt task to generate CSS, SASS, or JSON files with image dimension info",
   "main": "tasks/grunt-image-info.js",
   "engines": {
@@ -23,9 +23,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "json2css": "~4.1.0",
+    "async": "~0.2.9",
     "gm": "~1.13.1",
-    "async": "~0.2.9"
+    "json2css": "~4.1.0",
+    "svg-dimensions": "^1.0.2"
   },
   "devDependencies": {
     "grunt": "~0.4.0",

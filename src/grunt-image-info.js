@@ -2,6 +2,7 @@ var json2css = require('json2css'),
     fs = require('fs'),
     path = require('path'),
     gm = require('gm'),
+    svgDim = require('svg-dimensions'),
     async = require('async');
 
 function ExtFormat() {
@@ -87,14 +88,19 @@ module.exports = function (grunt) {
                 return;
             }
 
-            gmInstance(filename).size(function (err, data) {
+            var handler = function (err, data) {
                 if (err) return callback(err);
                 newImageSizeCache[relFilename] = {
                     mtime: newMTime,
                     data: data
                 };
                 callback(err, data);
-            });
+            };
+            if (filename.match(/\.svg$/)) {
+                svgDim.get(filename, handler);
+            } else {
+                gmInstance(filename).size(handler);
+            }
         };
 
         // Verify all properties are here
