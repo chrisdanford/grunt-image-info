@@ -165,6 +165,12 @@ module.exports = function (grunt) {
 
                 cleanCoords[cleanCoords.length - 1].last = true;
 
+                cleanCoords.sort(function(a, b) {
+                    var x = a['name'];
+                    var y = b['name'];
+                    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                });
+
                 // Render the variables via json2css
                 var cssStr = json2css(cleanCoords, {'format': cssFormat, 'formatOpts': cssOptions});
 
